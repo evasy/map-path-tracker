@@ -17,7 +17,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +39,8 @@ import java.lang.reflect.Array;
 import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -90,16 +94,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
-
             getLocation();
         }
         else {
             requestLocationPermission();
+            getLocation();
         }
-
-
     }
 
+     /**
+      * retrieves the device's current location.
+      * checks for location permission before requesting the location.
+      */
     private void getLocation() {
         Log.d(TAG, "Get the device's current location");
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -112,8 +118,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
                             if (currentLocation != null) {
-                                longitude = currentLocation.getLongitude();
                                 latitude = currentLocation.getLatitude();
+                                longitude = currentLocation.getLongitude();
+
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(latitude, longitude), 16)); // zoom to center
+
                                 Log.i("GOOGLE_MAP_TAG", "Current location coordinate (latitude, longitude): " +
                                         String.valueOf(latitude) + ", " + String.valueOf(longitude));
                             } else {
@@ -132,6 +142,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Check if the map is ready.
+     * It checks for location permission and enables the "My Location" button on the map.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -142,9 +156,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             requestLocationPermission();
         }
-
     }
 
+    /**
+     * checks if the location permission is granted.
+     */
     private boolean isLocationPermissionGranted(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -155,25 +171,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * requests the location permission from the user.
+     */
     private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
     }
 
+
+    private void markAndLocate(double latitude, double longitude) {
+        MarkerOptions mp = new MarkerOptions();
+        mp.position(new LatLng(latitude, longitude));
+        mMap.addMarker(mp);
+    }
+
+    /**
+     * retrieves location every 3 seconds and
+     * store the coordinates as a string into 'coordinates'
+     */
     private void startLocationUpdates() {
         mHandler = new Handler();
         mRunnable = new Runnable() {
             @Override
             public void run() {
                 getLocation();
+                markAndLocate(latitude, longitude);
+
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String timestamp = now.format(formatter);
+
                 String newLocation;
-                newLocation = String.valueOf(latitude) + "," + String.valueOf(longitude) + "," ; // time stamp
+                newLocation = String.valueOf(latitude) + "," + String.valueOf(longitude) + "," + timestamp;
                 coordinates.add(newLocation);
+
+                Toast.makeText(getApplicationContext(), "Your Location: " + latitude + ", " + longitude,
+                        Toast.LENGTH_SHORT).show(); // output location for testing
                 mHandler.postDelayed(this, 3000); // Update every 3 seconds
             }
         };
         mHandler.postDelayed(mRunnable, 0); // Start immediately
     }
 
+    /**
+     * writes the coordinates into a txt file and clears the 'coordinates' arraylist
+     */
     private void stopLocationUpdates() {
         if (mHandler != null && mRunnable != null) {
             mHandler.removeCallbacks(mRunnable);
@@ -181,13 +223,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mRunnable = null;
         }
         System.out.println(coordinates);
-        writeToFile();
+        // writeToFile();
         coordinates.clear();
     }
 
-        private void writeToFile() {
-        String filename = "file.txt"; // TODO: make it show in date and time
-        String filepath = "/Users/yitongshan/AndroidStudioProjects/pathtracker/app/RecordedPaths/" + filename;
+    private void writeToFile() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String timestamp = now.format(formatter);
+        String filename = timestamp + ".txt";
+        String filepath = getApplicationContext().getFilesDir() + "/" + filename; // /data/user/0/com.example.path_tracker/files/filename.txt
         try {
             FileWriter fileWriter = new FileWriter(filepath);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -197,11 +242,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();
-            System.out.println("Data written to the file successfully.");
+            System.out.println("Data written to the file at " +filepath+ " successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 }

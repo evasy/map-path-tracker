@@ -33,16 +33,24 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCO9u9n4mguwvzsKcIgd1vP7kqoR-AxCdU" />
 
+        <activity android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".MapsActivity"
             android:exported="true"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
+
+
+
+
     </application>
 
 </manifest>
