@@ -7,33 +7,36 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private Button btnRecord;
-    private Button btnLoad;
+    private Button btnShowFileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         btnRecord = findViewById(R.id.btnRecord);
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
 
-        btnLoad = findViewById(R.id.btnLoad);
-//        btnLoad.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, LoadActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        btnShowFileList = findViewById(R.id.btnShowFileList);
+        btnShowFileList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, FileListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
     }
 }

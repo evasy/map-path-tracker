@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".HomeActivity">
 
     <Button
         android:id="@+id/btnRecord"
@@ -14,9 +14,14 @@
         android:text="Record Path" />
 
     <Button
-        android:id="@+id/btnLoad"
+        android:id="@+id/btnShowFileList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Load Path" />
+        android:text="Files List" />
+
+    <ListView
+        android:id="@+id/listViewFiles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

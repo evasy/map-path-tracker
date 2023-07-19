@@ -8,15 +8,19 @@ import androidx.core.provider.FontsContractCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.internal.Constants;
@@ -62,8 +66,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Runnable mRunnable;
 
     private Button btnStartPause;
+    private Button btnSaveFile;
 
     private boolean isUpdatingLocation = false; // state of whether the location is updating
+    private String fileName;
+    private String filepath;
 
 
 
@@ -89,6 +96,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        btnSaveFile = findViewById(R.id.btnSaveFile);
+        btnSaveFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editFileName();
+            }
+        });
+
         if (isLocationPermissionGranted()) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -102,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-     /**
+    /**
       * retrieves the device's current location.
       * checks for location permission before requesting the location.
       */
@@ -195,7 +210,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 getLocation();
-                markAndLocate(latitude, longitude);
+                if (latitude != 0 && longitude != 0) {
+                    markAndLocate(latitude, longitude);
+                }
 
                 LocalDateTime now = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -223,16 +240,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mRunnable = null;
         }
         System.out.println(coordinates);
-        // writeToFile();
-        coordinates.clear();
+        editFileName();
     }
 
-    private void writeToFile() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String timestamp = now.format(formatter);
-        String filename = timestamp + ".txt";
-        String filepath = getApplicationContext().getFilesDir() + "/" + filename; // /data/user/0/com.example.path_tracker/files/filename.txt
+    /**
+     * edit the name of the file based on the input
+     * and save the file with the entered name in text format.
+     */
+    private void editFileName() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter File Name:");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // save button
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                fileName = input.getText().toString();
+                saveFile(fileName);
+            }
+
+        });
+
+        // cancel button
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    /**
+     * save the arraylist of coordinates
+     * @param fileName is the input filename
+     */
+    private void saveFile(String fileName) {
+//        LocalDateTime now = LocalDateTime.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String timestamp = now.format(formatter);
+        fileName = fileName + ".txt";
+        filepath = getApplicationContext().getFilesDir() + "/" + fileName; // /data/user/0/com.example.path_tracker/files/filename.txt
         try {
             FileWriter fileWriter = new FileWriter(filepath);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -242,10 +295,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();
-            System.out.println("Data written to the file at " +filepath+ " successfully.");
+            System.out.println("Data written to the file at " + filepath + " successfully.");
+            Toast.makeText(getApplicationContext(), "File Path: " + filepath + ", saved.", Toast.LENGTH_SHORT).show();
+
+            filepath = ""; // reset
+            coordinates.clear(); // reset
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
 }
