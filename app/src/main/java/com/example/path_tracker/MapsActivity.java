@@ -86,6 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 if (!isUpdatingLocation) {
+                    mMap.clear();
                     startLocationUpdates();
                     btnStartPause.setText("Pause");
                 } else {
@@ -95,15 +96,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 isUpdatingLocation = !isUpdatingLocation;
             }
         });
-
-        btnSaveFile = findViewById(R.id.btnSaveFile);
-        btnSaveFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editFileName();
-            }
-        });
-
         if (isLocationPermissionGranted()) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -194,17 +186,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void markAndLocate(double latitude, double longitude) {
-        MarkerOptions mp = new MarkerOptions();
-        mp.position(new LatLng(latitude, longitude));
-        mMap.addMarker(mp);
-    }
-
     /**
      * retrieves location every 3 seconds and
      * store the coordinates as a string into 'coordinates'
      */
     private void startLocationUpdates() {
+        mMap.clear(); // if there are markers, clear them before start
+
         mHandler = new Handler();
         mRunnable = new Runnable() {
             @Override
@@ -219,7 +207,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String timestamp = now.format(formatter);
 
                 String newLocation;
-                newLocation = String.valueOf(latitude) + "," + String.valueOf(longitude) + "," + timestamp;
+                newLocation = String.valueOf(latitude) + "," + String.valueOf(longitude) + ",";
+//                newLocation = String.valueOf(latitude) + "," + String.valueOf(longitude) + "," + timestamp;
                 coordinates.add(newLocation);
 
                 Toast.makeText(getApplicationContext(), "Your Location: " + latitude + ", " + longitude,
@@ -244,12 +233,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
+     * add a marker on the map.
+     */
+    private void markAndLocate(double latitude, double longitude) {
+        MarkerOptions mp = new MarkerOptions();
+        mp.position(new LatLng(latitude, longitude));
+        mMap.addMarker(mp);
+    }
+
+    /**
      * edit the name of the file based on the input
      * and save the file with the entered name in text format.
      */
     private void editFileName() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter File Name:");
+        builder.setTitle("Enter Path Name:");
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
