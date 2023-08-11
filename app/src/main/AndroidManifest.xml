@@ -34,7 +34,8 @@
             android:value="AIzaSyCO9u9n4mguwvzsKcIgd1vP7kqoR-AxCdU" />
 
         <activity android:name=".HomeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -49,11 +50,19 @@
 
         <activity
             android:name=".FileListActivity"
-            android:label="File List Activity" />
+            android:label="File List" />
 
         <activity
             android:name=".DisplayTextFileActivity"
             android:label="Display Text File" />
+
+        <activity
+            android:name=".NavigateListActivity"
+            android:label="Path List" />
+
+        <activity
+            android:name=".NavigateActivity"
+            android:label="Navigate Path" />
 
 
 

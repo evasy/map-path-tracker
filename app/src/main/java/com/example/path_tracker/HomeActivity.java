@@ -11,6 +11,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button btnRecord;
     private Button btnShowFileList;
+    private Button btnNavigate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        btnNavigate = findViewById(R.id.btnNavigate);
+        btnNavigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, NavigateListActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 

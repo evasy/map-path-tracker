@@ -14,6 +14,12 @@
         android:text="Record Path" />
 
     <Button
+        android:id="@+id/btnNavigate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Navigate Path" />
+
+    <Button
         android:id="@+id/btnShowFileList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
