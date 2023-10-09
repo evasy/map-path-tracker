@@ -7,7 +7,7 @@ public class RDPAlgo {
 
     static int min_coordinates = 5;
 
-    public static List<Coordinate> simplify(List<Coordinate> coordinates, double epsilon) {
+    public static List<Point> simplify(List<Point> coordinates, double epsilon) {
         if (coordinates.size() < min_coordinates) {
             return coordinates;
         }
@@ -24,11 +24,11 @@ public class RDPAlgo {
             }
         }
 
-        List<Coordinate> simplifiedCoordinates = new ArrayList<>();
+        List<Point> simplifiedCoordinates = new ArrayList<>();
 
         if (maxDistance > epsilon) {
-            List<Coordinate> firstPart = simplify(coordinates.subList(0, index + 1), epsilon);
-            List<Coordinate> secondPart = simplify(coordinates.subList(index, coordinates.size()), epsilon);
+            List<Point> firstPart = simplify(coordinates.subList(0, index + 1), epsilon);
+            List<Point> secondPart = simplify(coordinates.subList(index, coordinates.size()), epsilon);
 
             // Remove the last point of the firstPart to avoid duplication
             firstPart.remove(firstPart.size() - 1);
@@ -43,7 +43,7 @@ public class RDPAlgo {
         return simplifiedCoordinates;
     }
 
-    private static double perpendicularDistance(Coordinate point, Coordinate lineStart, Coordinate lineEnd) {
+    private static double perpendicularDistance(Point point, Point lineStart, Point lineEnd) {
         double lineLength = lineStart.distanceTo(lineEnd);
 
         if (lineLength == 0.0) {
@@ -58,6 +58,6 @@ public class RDPAlgo {
         double projectedX = lineStart.getLongitude() + t * (lineEnd.getLongitude() - lineStart.getLongitude());
         double projectedY = lineStart.getLatitude() + t * (lineEnd.getLatitude() - lineStart.getLatitude());
 
-        return point.distanceTo(new Coordinate(projectedY, projectedX));
+        return point.distanceTo(new Point(projectedY, projectedX));
     }
 }

@@ -34,20 +34,18 @@ public class NavigateActivity extends AppCompatActivity {
      * Note: right now we don't need timestamp.
      * @param fileName
      */
-    private void stringToCoordinate(String fileName) {
+    private void stringToPoint(String fileName) {
         try {
             // Open the file using InputStream
             InputStream inputStream = openFileInput(fileName);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
+                Point c = new Point(Double.parseDouble(line.split(",")[0]),Double.parseDouble(line.split(",")[1]));
+                points.add(c); // add new points to the array
             }
             reader.close();
             inputStream.close();
-
-
 
         } catch (IOException e) {
             e.printStackTrace();
