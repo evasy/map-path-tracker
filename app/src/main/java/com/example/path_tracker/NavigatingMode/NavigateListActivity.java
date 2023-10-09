@@ -1,4 +1,4 @@
-package com.example.path_tracker;
+package com.example.path_tracker.NavigatingMode;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.path_tracker.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class NavigateListActivity extends AppCompatActivity {
                 String fileName = (String) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(NavigateListActivity.this, NavigateActivity.class);
-                intent.putExtra("FILE_NAME", fileName);
+                intent.putExtra("FILE_NAME", fileName); // pass the selected file
                 startActivity(intent);
             }
         });

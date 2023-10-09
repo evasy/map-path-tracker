@@ -1,4 +1,4 @@
-package com.example.path_tracker;
+package com.example.path_tracker.RecordingMode;
 
 import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
 
@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.path_tracker.R;
 import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

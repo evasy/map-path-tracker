@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".RecordingMode.MapsActivity"
             android:exported="true"
             android:label="@string/title_activity_maps">
         </activity>
@@ -57,11 +57,11 @@
             android:label="Display Text File" />
 
         <activity
-            android:name=".NavigateListActivity"
+            android:name=".NavigatingMode.NavigateListActivity"
             android:label="Path List" />
 
         <activity
-            android:name=".NavigateActivity"
+            android:name=".NavigatingMode.NavigateActivity"
             android:label="Navigate Path" />
 
 

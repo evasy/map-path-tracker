@@ -7,6 +7,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.path_tracker.NavigatingMode.NavigateListActivity;
+import com.example.path_tracker.RecordingMode.MapsActivity;
+
 public class HomeActivity extends AppCompatActivity {
 
     private Button btnRecord;
