@@ -40,8 +40,6 @@ import com.google.android.gms.tasks.Task;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;

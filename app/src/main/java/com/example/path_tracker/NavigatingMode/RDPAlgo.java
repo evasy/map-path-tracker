@@ -5,18 +5,18 @@ import java.util.List;
 
 public class RDPAlgo {
 
-    static int min_coordinates = 5;
+    static int min_points = 5;
 
-    public static List<Point> simplify(List<Point> coordinates, double epsilon) {
-        if (coordinates.size() < min_coordinates) {
-            return coordinates;
+    public static List<Point> simplify(List<Point> points, double epsilon) {
+        if (points.size() < min_points) {
+            return points;
         }
 
         int index = 0;
         double maxDistance = 0.0;
 
-        for (int i = 1; i < coordinates.size() - 1; i++) {
-            double distance = perpendicularDistance(coordinates.get(i), coordinates.get(0), coordinates.get(coordinates.size() - 1));
+        for (int i = 1; i < points.size() - 1; i++) {
+            double distance = LineDistance(points.get(i), points.get(0), points.get(points.size() - 1));
 
             if (distance > maxDistance) {
                 maxDistance = distance;
@@ -24,26 +24,26 @@ public class RDPAlgo {
             }
         }
 
-        List<Point> simplifiedCoordinates = new ArrayList<>();
+        List<Point> simplifiedpoints = new ArrayList<>();
 
         if (maxDistance > epsilon) {
-            List<Point> firstPart = simplify(coordinates.subList(0, index + 1), epsilon);
-            List<Point> secondPart = simplify(coordinates.subList(index, coordinates.size()), epsilon);
+            List<Point> firstPart = simplify(points.subList(0, index + 1), epsilon);
+            List<Point> secondPart = simplify(points.subList(index, points.size()), epsilon);
 
             // Remove the last point of the firstPart to avoid duplication
             firstPart.remove(firstPart.size() - 1);
 
-            simplifiedCoordinates.addAll(firstPart);
-            simplifiedCoordinates.addAll(secondPart);
+            simplifiedpoints.addAll(firstPart);
+            simplifiedpoints.addAll(secondPart);
         } else {
-            simplifiedCoordinates.add(coordinates.get(0));
-            simplifiedCoordinates.add(coordinates.get(coordinates.size() - 1));
+            simplifiedpoints.add(points.get(0));
+            simplifiedpoints.add(points.get(points.size() - 1));
         }
 
-        return simplifiedCoordinates;
+        return simplifiedpoints;
     }
 
-    private static double perpendicularDistance(Point point, Point lineStart, Point lineEnd) {
+    private static double LineDistance(Point point, Point lineStart, Point lineEnd) {
         double lineLength = lineStart.distanceTo(lineEnd);
 
         if (lineLength == 0.0) {

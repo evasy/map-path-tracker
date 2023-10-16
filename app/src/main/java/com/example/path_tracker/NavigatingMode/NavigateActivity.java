@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class NavigateActivity extends AppCompatActivity {
 
     static ArrayList<Point> points = new ArrayList<>();
+    static String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,9 @@ public class NavigateActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            String fileName = intent.getStringExtra("FILE_NAME");
+            fileName = intent.getStringExtra("FILE_NAME");
         }
+        stringToPoint(fileName);
     }
 
     /**
@@ -50,5 +52,9 @@ public class NavigateActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void generatePath(ArrayList<Point> points) {
+
     }
 }
