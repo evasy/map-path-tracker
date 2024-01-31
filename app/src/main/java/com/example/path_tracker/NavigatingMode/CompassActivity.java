@@ -22,7 +22,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
     private float[] orientation = new float[3];
     private TextView textView;
 
-    private final float PATH_DIRECTION = 90; // Example: 90 degrees (East)
+    private final float PATH_DIRECTION = 90; // can be dynamic, Example: (East)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +39,23 @@ public class CompassActivity extends Activity implements SensorEventListener {
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL); // register listener
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(this); // unregister
     }
 
+    /**
+     * This method is called whenever there is a new sensor event.
+     * It processes the sensor data, calculates the device orientation, and displays the information.
+     * @param event
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
+        // sensor type check
         if (event.sensor == accelerometer) {
             System.arraycopy(event.values, 0, lastAccelerometer, 0, event.values.length);
             lastAccelerometerSet = true;

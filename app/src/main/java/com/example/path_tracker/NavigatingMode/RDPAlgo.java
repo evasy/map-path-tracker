@@ -5,17 +5,18 @@ import java.util.List;
 
 public class RDPAlgo {
 
-    static int min_points = 5;
+    static int min_points = 2; // base case -> what is a good number of points
 
-    public static List<Point> simplify(List<Point> points, double epsilon) {
-        if (points.size() < min_points) {
+    public static ArrayList<Point> simplify(ArrayList<Point> points, double epsilon) {
+        if (points.size() <= min_points) {
             return points;
         }
 
         int index = 0;
-        double maxDistance = 0.0;
+        double maxDistance = 0.0; // a threshold
 
         for (int i = 1; i < points.size() - 1; i++) {
+
             double distance = LineDistance(points.get(i), points.get(0), points.get(points.size() - 1));
 
             if (distance > maxDistance) {
@@ -24,11 +25,12 @@ public class RDPAlgo {
             }
         }
 
-        List<Point> simplifiedpoints = new ArrayList<>();
+        ArrayList<Point> simplifiedpoints = new ArrayList<>();
 
+        // if the distance is larger than the threshold, we don't simplify it.
         if (maxDistance > epsilon) {
-            List<Point> firstPart = simplify(points.subList(0, index + 1), epsilon);
-            List<Point> secondPart = simplify(points.subList(index, points.size()), epsilon);
+            List<Point> firstPart = simplify((ArrayList<Point>) points.subList(0, index), epsilon);
+            List<Point> secondPart = simplify((ArrayList<Point>) points.subList(index, points.size()), epsilon);
 
             // Remove the last point of the firstPart to avoid duplication
             firstPart.remove(firstPart.size() - 1);
