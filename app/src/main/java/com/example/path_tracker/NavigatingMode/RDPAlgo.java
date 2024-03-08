@@ -37,7 +37,8 @@ public class RDPAlgo {
 
             simplifiedpoints.addAll(firstPart);
             simplifiedpoints.addAll(secondPart);
-        } else {
+        }
+        else {
             simplifiedpoints.add(points.get(0));
             simplifiedpoints.add(points.get(points.size() - 1));
         }

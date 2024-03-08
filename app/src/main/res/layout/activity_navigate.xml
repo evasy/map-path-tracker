@@ -7,17 +7,30 @@
     android:gravity="center"
     tools:context=".RecordingMode.MapsActivity">
 
-
-    <Button
-        android:id="@+id/start_button"
+    <TextView
+        android:id="@+id/directionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start" />
+        android:text="Direction Text"
+        android:textSize="18sp" />
+
 
     <Button
-        android:id="@+id/pause_button"
-        android:text="Pause"
+        android:id="@+id/btnStartPause"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
 
 </LinearLayout>

@@ -1,3 +1,9 @@
+/**
+ * This file is the page where the user clicks and selects the path they
+ * will be walking.
+ */
+
+
 package com.example.path_tracker.NavigatingMode;
 
 import android.content.Intent;
@@ -22,7 +28,7 @@ public class NavigateListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigate);
+        setContentView(R.layout.activity_listfiles);
 
         listViewFiles = findViewById(R.id.listViewFiles);
 
